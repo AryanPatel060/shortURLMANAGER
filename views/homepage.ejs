@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .home-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .home-form h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .home-form label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .home-form input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .home-form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .home-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .home-form .short-url {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .home-form .short-url label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .home-form .short-url input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            color: #333;
+            cursor: default;
+        }
+        .table-container {
+            background: #fff;
+            padding: 20px;
+            margin-top: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 900px;
+        }
+
+        .table-container h3 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        table td {
+            font-size: 14px;
+            color: #333;
+        }
+        #logoutbtn{
+           margin-top: 20px; 
+           width: 150px;
+           border: red 2px solid;
+           color: red;
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="home-form">
+        <h3>URL Shortener</h3>
+        
+            <form action="/" method="POST">
+                <label for="url">Enter Your URL here</label>    
+                <input type="text" id="url" name="url" placeholder="Enter your URL" required>
+                <input type="submit" value="Shorten URL">
+            </form>
+            <form id="logoutbtn" action="/logout">
+                <input type="submit" value="Logout">
+            </form>
+       
+        <% if (locals.newurl) { %>
+        <div class="short-url">
+            <label for="short-url">Short URL:</label>
+            <input type="text" id="short-url" value="<%= locals.newurl.shortid %>" readonly>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="table-container">
+        <h3>URL Details</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Short ID</th>
+                    <th>Original URL</th>
+                    <th>Clicks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (locals.urls && locals.urls.length > 0) { %>
+                    <% locals.urls.forEach((url, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%=url.shortid %></td>
+                            <td><%= url.redirectionurl %></td>
+                            <td><%= url.visitHistory.length %></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="4">No URLs found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
